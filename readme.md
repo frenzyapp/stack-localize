@@ -43,3 +43,6 @@ $response = $app->handle($request)->send();
 
 $app->terminate($request, $response);
 ```
+
+#### TODO
+ - Tests
