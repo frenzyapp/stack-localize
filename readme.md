@@ -18,7 +18,7 @@ The locale will be accessible on the Request getLocale() method and be removed
 from the request pathinfo for easier routing.
 
 #### Example with Silex
-```
+```php
 <?php
 
 require_once __DIR__.'/../vendor/autoload.php';
