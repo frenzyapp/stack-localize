@@ -35,8 +35,8 @@ class StackLocalize implements HttpKernelInterface {
 	}
 
 	/**
-     * {@inheritDoc}
-     */
+	 * {@inheritDoc}
+	 */
 	public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = true)
 	{
 		// Set the default locale.
