@@ -46,18 +46,19 @@ class StackLocalize implements HttpKernelInterface {
 		// URI prefix lookup.
 		$locale = explode('/', trim($request->getPathInfo(), '/'));
 		$locale = array_filter($locale, function($v) { return $v != ''; });
-		$locale = isset($locale[0]) ? $locale[0] : null;
+		$locale = isset($locale[0]) ? $locale[0] : $default;
 
 		if (in_array($locale, $this->locales))
 		{
 			$pathinfo = '/'.ltrim(substr($request->getPathInfo(), strlen($locale) +1), '/');
 
-			if ($locale === $default) return RedirectResponse::create($pathinfo);
+			if ($locale === $default and $pathinfo !== '/')
+				return RedirectResponse::create($pathinfo);
 
 			$request->server->set('REQUEST_URI', $pathinfo);
 			$request->setDefaultLocale($default);
 			$request->setLocale($locale);
-			
+
 			$request = $request->duplicate();
 		}
 
