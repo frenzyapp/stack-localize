@@ -1,6 +1,6 @@
 <?php namespace Frenzy\Localize;
 
-class Request extends \Symfony\Component\HttpFoundation\Request {
+class Request extends \Illuminate\Http\Request {
 
 	/**
 	 * Change the path info.
