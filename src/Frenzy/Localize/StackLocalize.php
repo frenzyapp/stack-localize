@@ -3,6 +3,7 @@
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class StackLocalize implements HttpKernelInterface {
 
@@ -48,6 +49,8 @@ class StackLocalize implements HttpKernelInterface {
 		if (in_array($locale, $this->locales))
 		{
 			$pathinfo = '/'.ltrim(substr($request->getPathInfo(), strlen($locale) +1), '/');
+
+			if ($locale === $default) return RedirectResponse::create($pathinfo);
 
 			$request->setLocale($locale);
 			$request->setPathInfo($pathinfo);

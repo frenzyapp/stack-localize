@@ -23,7 +23,7 @@ class Request extends \Illuminate\Http\Request {
 	{
 		$root = rtrim($this->getSchemeAndHttpHost().$this->getBaseUrl(), '/');
 
-		if ( ! $trueRoot and $this->defaultLocale !== $this->locale)
+		if ( ! $trueRoot)
 		{
 			$root .= '/'.$this->locale;
 		}
