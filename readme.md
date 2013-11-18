@@ -52,5 +52,17 @@ $response = $app->handle($request)->send();
 $app->terminate($request, $response);
 ```
 
+#### Example with Laravel
+```php
+<?php
+
+$params = [
+    'locales' => ['fr', 'en', 'es'],
+    'fallback' => 'fr',
+];
+
+App::middleware('Frenzy\Localize\StackLocalize', $params);
+```
+
 #### TODO
  - Tests
