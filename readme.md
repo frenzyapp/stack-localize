@@ -62,6 +62,10 @@ $params = [
 ];
 
 App::middleware('Frenzy\Localize\StackLocalize', $params);
+
+// Be sure to set the locale from the request when booting your app.
+App::setLocale(Request::getLocale());
+
 ```
 
 #### TODO
