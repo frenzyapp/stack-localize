@@ -63,7 +63,7 @@ class StackLocalize implements HttpKernelInterface {
 			$locale = $default;
 		}
 
-		$request->server->set('REQUEST_URI', $pathInfo);
+		$request->server->set('SCRIPT_FILENAME', $_SERVER['SCRIPT_FILENAME'] . '/' . $locale);
 		$request->setDefaultLocale($default);
 		$request->setLocale($locale);
 
