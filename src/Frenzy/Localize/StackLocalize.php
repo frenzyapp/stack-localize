@@ -50,7 +50,8 @@ class StackLocalize implements HttpKernelInterface {
 
 		if (in_array($locale, $this->locales))
 		{
-			$pathinfo = '/'.ltrim(substr($request->getPathInfo(), strlen($locale) +1));
+			$pathinfo = '/'.ltrim(substr($request->getPathInfo(), strlen($locale) +1), '/');
+
 			$request->setLocale($locale);
 			$request->setPathInfo($pathinfo);
 		}
