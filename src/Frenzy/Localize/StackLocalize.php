@@ -40,11 +40,13 @@ class StackLocalize implements HttpKernelInterface {
 	 */
 	public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = true)
 	{
-		// Set the default locale.
+		// Check for the default locale.
 		$default = $this->defaultLocale ?: $request->getPreferredLanguage($this->locales);
-		$request->setDefaultLocale($default);
-
-		$locale = $request->segment(1);
+		
+		// URI prefix lookup.
+		$locale = explode('/', trim($request->getPathInfo(), '/'));
+		$locale = array_filter($locale, function($v) { return $v != ''; });
+		$locale = isset($locale[0]) ? $locale[0] : null;
 
 		if (in_array($locale, $this->locales))
 		{
@@ -52,8 +54,11 @@ class StackLocalize implements HttpKernelInterface {
 
 			if ($locale === $default) return RedirectResponse::create($pathinfo);
 
+			$request->server->set('REQUEST_URI', $pathinfo);
+			$request->setDefaultLocale($default);
 			$request->setLocale($locale);
-			$request->setPathInfo($pathinfo);
+			
+			$request = $request->duplicate();
 		}
 
 		return $this->app->handle($request, $type, $catch);

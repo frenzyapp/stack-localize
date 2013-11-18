@@ -23,7 +23,7 @@ from the request pathinfo for easier routing.
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-use Frenzy\Localize\Request;
+use Symfony\Component\HttpFoundation\Request;
 
 $app = new Silex\Application();
 
@@ -35,9 +35,8 @@ $app->get('/', function (Request $request) {
 
 // Accessible on /{locale}/test
 $app->get('/test', function (Request $request) {
-	// Show the current request root for languages except the default.
-	// (ex.: http://mydomain.com/{locale})
-	return $request->root();
+    // The locale should be set.
+	return $request->getLocale().'/test';
 });
 
 $locales = ['en', 'fr', 'es'];
