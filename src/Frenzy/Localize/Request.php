@@ -21,13 +21,13 @@ class Request extends \Symfony\Component\HttpFoundation\Request {
 	 */
 	public function root($trueRoot = false)
 	{
-		$root = $this->getSchemeAndHttpHost().$this->getBaseUrl();
+		$root = rtrim($this->getSchemeAndHttpHost().$this->getBaseUrl(), '/');
 
-		if ( ! $trueRoot)
+		if ( ! $trueRoot and $this->defaultLocale !== $this->locale)
 		{
-			$root .= $this->getLocale();
+			$root .= '/'.$this->locale;
 		}
 
-		return rtrim($root, '/');
+		return $root;
 	}
 }

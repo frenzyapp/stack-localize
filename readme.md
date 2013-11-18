@@ -27,8 +27,17 @@ use Frenzy\Localize\Request;
 
 $app = new Silex\Application();
 
+// Accessible on /{locale}/
 $app->get('/', function (Request $request) {
+	// The locale should be set.
 	return $request->getLocale();
+});
+
+// Accessible on /{locale}/test
+$app->get('/test', function (Request $request) {
+	// Show the current request root for languages except the default.
+	// (ex.: http://mydomain.com/{locale})
+	return $request->root();
 });
 
 $locales = ['en', 'fr', 'es'];
