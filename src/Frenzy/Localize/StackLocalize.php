@@ -48,19 +48,26 @@ class StackLocalize implements HttpKernelInterface {
 		$locale = array_filter($locale, function($v) { return $v != ''; });
 		$locale = isset($locale[0]) ? $locale[0] : $default;
 
+		$requestPathInfo = $request->getPathInfo();
+		$pathInfo = $requestPathInfo;
+
 		if (in_array($locale, $this->locales))
 		{
-			$pathinfo = '/'.ltrim(substr($request->getPathInfo(), strlen($locale) +1), '/');
+			$pathInfo = '/'.ltrim(substr($pathInfo, strlen($locale) +1), '/');
 
-			if ($locale === $default and $pathinfo !== '/')
-				return RedirectResponse::create($pathinfo);
-
-			$request->server->set('REQUEST_URI', $pathinfo);
-			$request->setDefaultLocale($default);
-			$request->setLocale($locale);
-
-			$request = $request->duplicate();
+			if ($locale === $default and $requestPathInfo !== '/')
+				return RedirectResponse::create($pathInfo);
 		}
+		else
+		{
+			$locale = $default;
+		}
+
+		$request->server->set('REQUEST_URI', $pathInfo);
+		$request->setDefaultLocale($default);
+		$request->setLocale($locale);
+
+		$request = $request->duplicate();
 
 		return $this->app->handle($request, $type, $catch);
 	}
