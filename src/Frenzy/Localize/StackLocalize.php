@@ -48,21 +48,16 @@ class StackLocalize implements HttpKernelInterface {
 		$locale = array_filter($locale, function($v) { return $v != ''; });
 		$locale = isset($locale[0]) ? $locale[0] : $default;
 
-		$requestPathInfo = $request->getPathInfo();
-		$pathInfo = $requestPathInfo;
+		$isValidLocale = in_array($locale, $this->locales);
+		if ( ! $isValidLocale) $locale = $default;
 
-		if (in_array($locale, $this->locales))
-		{
-			$pathInfo = '/'.ltrim(substr($pathInfo, strlen($locale) +1), '/');
+		$pathInfo = $request->getPathInfo();
 
-			// If the locale in the URI is the default,
-			// redirect to URI without locale.
-			if ($locale === $default and $requestPathInfo !== '/')
-				return RedirectResponse::create($pathInfo);
-		}
-		else
+		// If the locale in the URI is the default, redirect to URI without locale.
+		if ($isValidLocale and $locale === $default and $pathInfo !== '/')
 		{
-			$locale = $default;
+			$redirect = '/'.ltrim(substr($pathInfo, strlen($locale) +1), '/');
+			return RedirectResponse::create($redirect);
 		}
 
 		// Get the root path of the request.
