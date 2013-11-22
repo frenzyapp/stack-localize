@@ -55,6 +55,8 @@ class StackLocalize implements HttpKernelInterface {
 		{
 			$pathInfo = '/'.ltrim(substr($pathInfo, strlen($locale) +1), '/');
 
+			// If the locale in the URI is the default,
+			// redirect to URI without locale.
 			if ($locale === $default and $requestPathInfo !== '/')
 				return RedirectResponse::create($pathInfo);
 		}
@@ -63,13 +65,16 @@ class StackLocalize implements HttpKernelInterface {
 			$locale = $default;
 		}
 
-		$request->server->set('SCRIPT_FILENAME', $_SERVER['SCRIPT_FILENAME'] . '/' . $locale);
-		$request->setDefaultLocale($default);
-		$request->setLocale($locale);
+		// Get the root path of the request.
+		$root = $request->server->get('SCRIPT_FILENAME');
 
-		$request = $request->duplicate();
+		// Duplicate the request so we can change the root path and detected locales.
+		$newRequest = $request->duplicate();
+		$newRequest->server->set('SCRIPT_FILENAME', $root . '/' . $locale);
+		$newRequest->setDefaultLocale($default);
+		$newRequest->setLocale($locale);
 
-		return $this->app->handle($request, $type, $catch);
+		return $this->app->handle($newRequest, $type, $catch);
 	}
 
 }
