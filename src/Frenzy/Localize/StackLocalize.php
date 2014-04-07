@@ -57,7 +57,7 @@ class StackLocalize implements HttpKernelInterface {
 		if ($isValidLocale and $locale === $default and $pathInfo !== '/')
 		{
 			$redirect = '/'.ltrim(substr($pathInfo, strlen($locale) +1), '/');
-			return RedirectResponse::create($redirect);
+			return RedirectResponse::create($redirect, 301);
 		}
 
 		// Get the root path of the request.
