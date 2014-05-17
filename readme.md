@@ -41,9 +41,10 @@ $app->get('/test', function (Request $request) {
 
 $locales = ['en', 'fr', 'es'];
 $fallback = 'en';
+$redirectDefault = true;
 
 $stack = new Stack\Builder();
-$stack->push('Frenzy\Localize\StackLocalize', $locales, $fallback);
+$stack->push('Frenzy\Localize\StackLocalize', $locales, $fallback, $redirectDefault);
 $app = $stack->resolve($app);
 
 $request  = Request::createFromGlobals();
@@ -59,6 +60,7 @@ $app->terminate($request, $response);
 $params = [
     'locales' => ['fr', 'en', 'es'],
     'fallback' => 'fr',
+    'redirectDefault' => true,
 ];
 
 App::middleware('Frenzy\Localize\StackLocalize', $params);

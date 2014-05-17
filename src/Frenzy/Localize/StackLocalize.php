@@ -22,17 +22,25 @@ class StackLocalize implements HttpKernelInterface {
     protected $defaultLocale;
 
     /**
+     * If we redirect the default language to root.
+     *
+     * @var boolean
+     */
+    protected $redirectDefault;
+
+    /**
      * Constructor.
      *
      * @param HttpKernelInterface $app
      * @param array               $locales
      * @param string              $defaultLocale
      */
-    public function __construct(HttpKernelInterface $app, array $locales = null, $defaultLocale)
+    public function __construct(HttpKernelInterface $app, array $locales, $defaultLocale, $redirectDefault = true)
     {
         $this->app = $app;
         $this->locales = $locales;
         $this->defaultLocale = $defaultLocale;
+        $this->redirectDefault = $redirectDefault;
     }
 
     /**
@@ -54,7 +62,7 @@ class StackLocalize implements HttpKernelInterface {
         $pathInfo = $request->getPathInfo();
 
         // If the locale in the URI is the default, redirect to URI without locale.
-        if ($isValidLocale and $locale === $default and $pathInfo !== '/')
+        if ($this->redirectDefault and $isValidLocale and $locale === $default and $pathInfo !== '/')
         {
             $redirect = '/'.ltrim(substr($pathInfo, strlen($locale) +1), '/');
 
