@@ -60,7 +60,7 @@ class StackLocalize implements HttpKernelInterface {
 
             if ($request->getQueryString()) $redirect .= '?'.$request->getQueryString();
 
-            return RedirectResponse::create($redirect, 301, $request->headers);
+            return RedirectResponse::create($redirect, 301, $request->headers->all());
         }
 
         // Get the root path of the request.
